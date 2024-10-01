@@ -21,7 +21,9 @@ std::vector<Book*> Member::getBorrowedBooks() const{
 }
 
 Member::~Member() {
+    std::cout << "Member destructor called!" << std::endl;
     for (Book* book : borrowedBooks) {
+        std::cout << book << std::endl;
         book->returnBook();
     }
     borrowedBooks.clear();

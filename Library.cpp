@@ -12,11 +12,12 @@ Library::Library(){
 
 void Library::displayMembers() const{
     for(auto const& member: *members){
-        std::cout << member;
+        std::cout << *member;
     }
 }
 
 Library::~Library() {
+    std::cout << "Destructor called! " << std::endl;
     for (auto& book : *books) {
         delete book;  // Free each Book*
     }
@@ -36,8 +37,8 @@ void Library::displayBooks() const {
 
 void Library::borrowBook(std::string& memberId, std::string& ISBN){
     auto memberIt = std::find_if(members->begin(), members->end(),
-            [&memberId](const Member& member) {
-                return member.getId() == memberId;
+            [&memberId](const Member* member) {
+                return member->getId() == memberId;
             });    
 
     if (memberIt == members->end()) {
@@ -70,8 +71,8 @@ void Library::borrowBook(std::string& memberId, std::string& ISBN){
 
 void Library::returnBook(std::string& ISBN, std::string& memberId){
     auto memberIt = std::find_if(members->begin(), members->end(),
-            [&memberId](const Member& member) {
-                return member.getId() == memberId;
+            [&memberId](const Member* member) {
+                return member->getId() == memberId;
             });    
 
     if (memberIt == members->end()) {
@@ -100,6 +101,7 @@ void Library::returnBook(std::string& ISBN, std::string& memberId){
 
 void Library::addBook(std::string& ISBN, std::string& author, std::string& title){
     Book* newBook = new Book(ISBN, author, title);
+    std::cout << newBook << std::endl;
     books->push_back(newBook);
 }
 
@@ -127,8 +129,8 @@ void Library::addMember(std::string& name, std::string& id){
 }
 
 void Library::removeMember(std::string& id){
-    auto memberIt = std::find_if(members->begin(), members->end(), [&id](const Member& member){
-        return member.getId() == id;
+    auto memberIt = std::find_if(members->begin(), members->end(), [&id](const Member* member){
+        return member->getId() == id;
     });
 
     if(memberIt == members->end()){
